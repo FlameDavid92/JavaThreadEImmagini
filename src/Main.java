@@ -16,6 +16,7 @@ public class Main {
         testSequenziale(inputImage,outputImage);
         testParallelo1(inputImage,outputImage);
         testParallelo2(inputImage,outputImage);
+        testParallelo3(inputImage,outputImage); /*Non ha senso utilizzare questo approccio in questo caso!*/
     }
 
     public static void testSequenziale(BufferedImage inputImage, BufferedImage outputImage){
@@ -80,5 +81,47 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println("Parallelo2: "+(System.currentTimeMillis() - startTime)+" millisecondi.");
+    }
+
+    public static void testParallelo3(BufferedImage inputImage, BufferedImage outputImage){
+        long startTime = System.currentTimeMillis();
+
+        Thread t1 = new Thread(() -> {
+            testParallelo3Util(inputImage,outputImage, 0, inputImage.getWidth()/2);
+        });
+        Thread t2 = new Thread(() -> {
+            testParallelo3Util(inputImage,outputImage, inputImage.getWidth()/2, inputImage.getWidth());
+        });
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ImageIO.write(outputImage, "png", new File("outputImage.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Parallelo3: "+(System.currentTimeMillis() - startTime)+" millisecondi.");
+    }
+
+    private static void testParallelo3Util(BufferedImage inputImage, BufferedImage outputImage, int startW, int endW){
+        ImageBorderThread t1 = new ImageBorderThread(inputImage,outputImage,startW,endW,inputImage.getHeight()/2,inputImage.getHeight());
+        ImageBorderThread t2 = new ImageBorderThread(inputImage,outputImage,startW, endW, inputImage.getHeight()/2,inputImage.getHeight());
+
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
