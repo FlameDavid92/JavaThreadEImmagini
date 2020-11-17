@@ -71,7 +71,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Parallelo divisione in rettangoli: "+(System.currentTimeMillis() - startTime)+" millisecondi.");
+        System.out.println("Parallelo divisione in 4 rettangoli: "+(System.currentTimeMillis() - startTime)+" millisecondi.");
     }
 
     public static void testParalleloDivisioneIn4Righe(BufferedImage inputImage, BufferedImage outputImage){
