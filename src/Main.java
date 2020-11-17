@@ -31,6 +31,7 @@ public class Main {
         long startTime = System.currentTimeMillis();
         ImageBorderThread t1 = new ImageBorderThread(inputImage,outputImage,0,inputImage.getWidth(),0,inputImage.getHeight());
         t1.run();
+        System.out.println("Sequenziale: "+(System.currentTimeMillis() - startTime)+" millisecondi.");
     }
 
     public static void testParalleloDivisioneIn2Righe(BufferedImage inputImage, BufferedImage outputImage){
